@@ -59,7 +59,7 @@ namespace AWSLambda1Template
 
                     // Hier die eigenen Aufgabenstellungen 
 
-                    case "Aufgabe1":
+                    case "Aufgabe":
                         log.LogLine($"eigene Aufgabe1");
                         interneAntwort = new PlainTextOutputSpeech();
                         (interneAntwort as PlainTextOutputSpeech).Text = Daten.Antwort1Message;
@@ -75,6 +75,7 @@ namespace AWSLambda1Template
             }
 
             antwort.Response.OutputSpeech = interneAntwort;
+            antwort.Version = "1.0";
             return antwort;
         }
 
