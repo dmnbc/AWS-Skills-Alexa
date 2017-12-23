@@ -52,7 +52,7 @@ namespace RequestAnalyseAWSLambda
             if (input.GetRequestType() == typeof(LaunchRequest))
             { // einfacher Aufruf des Skills ohne Aufgabenstellung ( Intent )
 
-                log.LogLine("(Line:45) Der Skill " + skillName + " wurde gelaunched.");
+                log.LogLine("(Line:55) Der Skill " + skillName + " wurde gelaunched.");
 
                 outputSpeech = new PlainTextOutputSpeech();
                 (outputSpeech as PlainTextOutputSpeech).Text = "Ich bin bereit ";
@@ -60,16 +60,23 @@ namespace RequestAnalyseAWSLambda
             else if (input.GetRequestType() == typeof(IntentRequest)) // hier werden alle nicht 'LaunchRequests' behandelt
             {
                 var typeOfTntent = (IntentRequest)input.Request;
-                log.LogLine("(Line:53)Ein " + typeOfTntent.ToString() + " wurde erkannt");
+                log.LogLine("(Line:63)Ein " + typeOfTntent.ToString() + " wurde erkannt");
                 switch (typeOfTntent.Intent.Name)
                 {
                     case "CustomIntent":
-                    //    var auftrag = intentRequest.Intent.Slots["aufgabe"].Value;
-                    //    var wann = intentRequest.Intent.Slots["wann"].Value;
-                    //    var slotType = intentRequest.Intent.Slots.First().Key;
+                   
                         outputSpeech = new PlainTextOutputSpeech();
                         (outputSpeech as PlainTextOutputSpeech).Text =
-                                        "CusotmIntent erkannt";
+                                        "CustomIntent erkannt";
+                        SimpleCard simpleCard = new SimpleCard();
+                        simpleCard.Title = "Analyse";
+                        simpleCard.Content = typeOfTntent.Intent.Name;
+                        simpleCard.Content += typeOfTntent.Intent.ToString();
+                        skillResponse.Response.Card = simpleCard;
+                            
+                            
+                            
+                            // Alexa.NET.ResponseBuilder.TellWithCard("CustomIntent", skillName, "Analyse");
                         
                         break;
                     case "AMAZON.CancelIntent":
