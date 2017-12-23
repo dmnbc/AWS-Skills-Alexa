@@ -40,10 +40,12 @@ namespace CustomSlotsAWSLambda
 
             var log = context.Logger;
 
+            var intentRequest = input.Request as IntentRequest;
+
             if (input.GetRequestType() == typeof(LaunchRequest))
             { // einfacher Aufruf des Skills ohne Aufgabenstellung ( Intent )
 
-                //  log.LogLine("(Line:45) Der Skill " + skillName + " wurde gelaunched.");
+               log.LogLine("(Line:45) Der Skill " + skillName + " wurde gelaunched.");
 
                 outputSpeech = new PlainTextOutputSpeech();
                 (outputSpeech as PlainTextOutputSpeech).Text = "Ich bin bereit ";
@@ -54,10 +56,28 @@ namespace CustomSlotsAWSLambda
                 log.LogLine("(Line:53)Ein " + typeOfTntent.ToString() + " wurde erkannt");
                 switch (typeOfTntent.Intent.Name)
                 {
-                    // case "CustomIntent":
-                    // 
-                    //
-                    // break;
+                    case "CustomIntent":
+                        var auftrag = intentRequest.Intent.Slots["aufgabe"].Value;
+                        var wann = intentRequest.Intent.Slots["wann"].Value;
+                        var slotType = intentRequest.Intent.Slots.First().Key;
+                        outputSpeech = new PlainTextOutputSpeech();
+                        switch (slotType)
+                        {
+                            case "auftrag":
+                        (outputSpeech as PlainTextOutputSpeech).Text =
+                            "meine Aufgabe ist " + auftrag +"  "+wann;
+                                break;
+                            case "wann":
+                                (outputSpeech as PlainTextOutputSpeech).Text =
+                            auftrag + " ja, das erledige ich " + wann;
+                                break;
+                            default:
+                                (outputSpeech as PlainTextOutputSpeech).Text =
+                                    "keine passender slotType vorhanden ";
+                                break;
+
+                        }
+                        break;
                     case "AMAZON.CancelIntent":
                         outputSpeech = new PlainTextOutputSpeech();
                         (outputSpeech as PlainTextOutputSpeech).Text = "Jawohl, ich höre auf";
@@ -72,7 +92,9 @@ namespace CustomSlotsAWSLambda
                         break;
                     default:
                         outputSpeech = new PlainTextOutputSpeech();
-                        (outputSpeech as PlainTextOutputSpeech).Text = typeOfTntent.ToString() + "als " + typeOfTntent.Intent.Name + " erkannt." + " Das werde ich ignorieren "; break;
+                        (outputSpeech as PlainTextOutputSpeech).Text = " Das werde ich ignorieren "
+                                                                        + typeOfTntent.ToString();
+                        break;
 
 
 
