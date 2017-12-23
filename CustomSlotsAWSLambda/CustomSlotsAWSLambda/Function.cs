@@ -61,21 +61,25 @@ namespace CustomSlotsAWSLambda
                         var wann = intentRequest.Intent.Slots["wann"].Value;
                         var slotType = intentRequest.Intent.Slots.First().Key;
                         outputSpeech = new PlainTextOutputSpeech();
-                        switch (slotType)
-                        {
-                            case "auftrag":
-                        (outputSpeech as PlainTextOutputSpeech).Text =
-                            "meine Aufgabe ist " + auftrag +"  "+wann;
-                                break;
-                            case "wann":
-                                (outputSpeech as PlainTextOutputSpeech).Text =
-                            auftrag + " ja, das erledige ich " + wann;
-                                break;
-                            default:
-                                (outputSpeech as PlainTextOutputSpeech).Text =
-                                    "keine passender slotType vorhanden ";
-                                break;
 
+                        foreach (var slot in intentRequest.Intent.Slots)
+                        { /* Differenzierung der Slots klappt noch nicht  */
+                        //    (outputSpeech as PlainTextOutputSpeech).Text += slot.Key;
+                            switch (slot.Key)
+                            {
+                                case "aufgabe":
+                                    (outputSpeech as PlainTextOutputSpeech).Text +=
+                                       "meine Aufgabe ist " + auftrag ;
+                                    break;
+                                case "wann":
+                                    (outputSpeech as PlainTextOutputSpeech).Text +=
+                                       " ja, das erledige ich " + wann;
+                                    break;
+                                default:
+                                    (outputSpeech as PlainTextOutputSpeech).Text +=
+                                        "keine passender slotType vorhanden ";
+                                    break;
+                            }
                         }
                         break;
                     case "AMAZON.CancelIntent":
