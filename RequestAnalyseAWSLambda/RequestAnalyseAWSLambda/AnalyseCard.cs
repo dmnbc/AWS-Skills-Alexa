@@ -37,13 +37,25 @@ namespace RequestAnalyseAWSLambda
          //      content += "Intent.Signature:" + input.Intent.Signature.ToString() + "\n";
                content += "Intent.Slots:" + input.Intent.Slots.ToString() + "\n";
                content += "---------- Slots ------------ \n";
-            if(HasSlots(input))
+            if (HasSlots(input))
             {
                 IDictionary<string, Slot> slots = input.Intent.Slots;
                 content += "Intent.Slots.Count:" + slots.Count + "\n";
-                for(int i = 0; i < slots.Count; i++ )
+                for (int i = 0; i < slots.Count; i++)
                 {
-                    content += "slot["+i+"]:\n";
+                    try
+                    {
+                    content += "In slot[" + i + "] übergeben:\n";
+                    content += "  Key: " + slots.ElementAt(i).Key + "\n"; 
+                    content += "  Value: " + slots.ElementAt(i).Value.Value + "\n";
+                    content += "  Name: " + slots.ElementAt(i).Value.Name + "\n";
+                //    content += "  Resolution: " + slots.ElementAt(i).Value.Resolution.ToString() + "\n";
+                
+                    }
+                    catch(Exception e)
+                    {
+                        content += "Fehler bei der Analyse : " + e.Message;
+                    }
                 }
             }
             else
