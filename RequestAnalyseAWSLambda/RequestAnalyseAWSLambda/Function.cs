@@ -68,10 +68,12 @@ namespace RequestAnalyseAWSLambda
                         outputSpeech = new PlainTextOutputSpeech();
                         (outputSpeech as PlainTextOutputSpeech).Text =
                                         "CustomIntent erkannt";
-                        SimpleCard simpleCard = new SimpleCard();
-                        simpleCard.Title = "Analyse";
-                        simpleCard.Content = typeOfTntent.Intent.Name;
-                        simpleCard.Content += typeOfTntent.Intent.ToString();
+                        SimpleCard simpleCard = new SimpleCard
+                        {
+                            Title = "Analyse"
+                        };
+                        simpleCard.Content = Analyse.Content(intentRequest);
+                        
                         skillResponse.Response.Card = simpleCard;
                             
                             
