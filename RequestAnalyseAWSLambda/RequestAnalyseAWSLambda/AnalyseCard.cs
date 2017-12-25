@@ -46,9 +46,12 @@ namespace RequestAnalyseAWSLambda
                     try
                     {
                     content += "In slot[" + i + "] übergeben:\n";
-                    content += "  Key: " + slots.ElementAt(i).Key + "\n"; 
-                    content += "  Value: " + slots.ElementAt(i).Value.Value + "\n";
-                    content += "  Name: " + slots.ElementAt(i).Value.Name + "\n";
+                    content += "  Key: " + slots.ElementAt(i).Key + "\n";
+                        if (slots.ElementAt(i).Value.Value != null)
+                        { content += "  Value:>" + slots.ElementAt(i).Value.Value + "<\n"; }
+                        else
+                        { content += "  Value: leer\n"; }
+                //    content += "  Name: " + slots.ElementAt(i).Value.Name + "\n";
                 //    content += "  Resolution: " + slots.ElementAt(i).Value.Resolution.ToString() + "\n";
                 
                     }
