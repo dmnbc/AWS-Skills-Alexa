@@ -3,6 +3,13 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+/*   folgende NuGets sind zu laden
+     Alexa.NET" Version="1.4.0" 
+     Newtonsoft.Json" Version="10.0.1"   keine höheren Versionen !!!
+ * 
+ * 
+ */
+
 using Alexa.NET.Request;          // erfordert NuGet Pakate   Alexa.Net Tim Heuer
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
@@ -12,7 +19,7 @@ using Amazon.Lambda.Core;
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 
-namespace CustomSlotsAWSLambda
+namespace RequestAnalyseAWSLambda
 {
     public class Function
     {
@@ -26,7 +33,7 @@ namespace CustomSlotsAWSLambda
         /// <returns></returns>
         /// 
 
-        public static string skillName = "CustomSlots ";
+        public static string skillName = "RequestAnalyse";
 
         public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
         {
@@ -45,7 +52,7 @@ namespace CustomSlotsAWSLambda
             if (input.GetRequestType() == typeof(LaunchRequest))
             { // einfacher Aufruf des Skills ohne Aufgabenstellung ( Intent )
 
-               log.LogLine("(Line:45) Der Skill " + skillName + " wurde gelaunched.");
+                log.LogLine("(Line:55) Der Skill " + skillName + " wurde gelaunched.");
 
                 outputSpeech = new PlainTextOutputSpeech();
                 (outputSpeech as PlainTextOutputSpeech).Text = "Ich bin bereit ";
@@ -53,34 +60,26 @@ namespace CustomSlotsAWSLambda
             else if (input.GetRequestType() == typeof(IntentRequest)) // hier werden alle nicht 'LaunchRequests' behandelt
             {
                 var typeOfTntent = (IntentRequest)input.Request;
-                log.LogLine("(Line:53)Ein " + typeOfTntent.ToString() + " wurde erkannt");
+                log.LogLine("(Line:63)Ein " + typeOfTntent.ToString() + " wurde erkannt");
                 switch (typeOfTntent.Intent.Name)
                 {
                     case "CustomIntent":
-                        var auftrag = intentRequest.Intent.Slots["aufgabe"].Value;
-                        var wann = intentRequest.Intent.Slots["wann"].Value;
-                        var slotType = intentRequest.Intent.Slots.First().Key;
+                   
                         outputSpeech = new PlainTextOutputSpeech();
-
-                        foreach (var slot in intentRequest.Intent.Slots)
-                        { /* Differenzierung der Slots klappt noch nicht  */
-                        //    (outputSpeech as PlainTextOutputSpeech).Text += slot.Key;
-                            switch (slot.Key)
-                            {
-                                case "aufgabe":
-                                    (outputSpeech as PlainTextOutputSpeech).Text +=
-                                       "meine Aufgabe ist " + auftrag ;
-                                    break;
-                                case "wann":
-                                    (outputSpeech as PlainTextOutputSpeech).Text +=
-                                       " ja, das erledige ich " + wann;
-                                    break;
-                                default:
-                                    (outputSpeech as PlainTextOutputSpeech).Text +=
-                                        "keine passender slotType vorhanden ";
-                                    break;
-                            }
-                        }
+                        (outputSpeech as PlainTextOutputSpeech).Text =
+                                        "CustomIntent erkannt";
+                        SimpleCard simpleCard = new SimpleCard
+                        {
+                            Title = "Analyse"
+                        };
+                        simpleCard.Content = Analyse.Content(intentRequest);
+                        
+                        skillResponse.Response.Card = simpleCard;
+                            
+                            
+                            
+                            // Alexa.NET.ResponseBuilder.TellWithCard("CustomIntent", skillName, "Analyse");
+                        
                         break;
                     case "AMAZON.CancelIntent":
                         outputSpeech = new PlainTextOutputSpeech();
@@ -109,6 +108,9 @@ namespace CustomSlotsAWSLambda
             skillResponse.Response.OutputSpeech = outputSpeech;
             skillResponse.Version = "1.0";
             return skillResponse;
+
+
+
         }
     }
 }
