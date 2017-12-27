@@ -20,6 +20,14 @@ namespace AddingSlotsAWSLambda
         {
             var intentRequest = input.Request as IntentRequest;
             SkillResponse skillResponse = new SkillResponse();
+
+           // it is not possibe tocreate additional slots
+           // the voice recognition needs a fixed interaction modell at start !!!!!!
+
+            // maybe this will change in future releases. There is a way to do this
+            // in home autmation skills
+
+
             skillResponse.Response = new ResponseBody
             {
                 ShouldEndSession = false
