@@ -25,6 +25,7 @@ using Amazon.S3.Model;
 
 
 
+
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -51,7 +52,8 @@ namespace OnLaunchAWSLambda
              if (logging)
             {
                 lambdaLogger.LogLine("Log started");
-                lambdaLogger.LogLine("FunctionName:" + context.FunctionName);
+                lambdaLogger.LogLine("FunctionName:" + context.FunctionName + "last edited by " + StaticValues.company);
+                lambdaLogger.LogLine("Log ended");
               
             }
                 /* direktes Schreiben in eine Datei geht nicht, da es ein read-only Verzeichnis ist
