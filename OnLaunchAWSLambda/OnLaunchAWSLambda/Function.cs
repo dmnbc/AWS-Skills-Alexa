@@ -19,8 +19,7 @@ using Amazon.Lambda.Core;
 //using Amazon.S3.Model;
 
 // DB Connect via Oracle Connector
-
-using MySql.Data.MySqlClient;   // dll durch 'Verweis hinzufügen' einbinden 
+//using MySql.Data.MySqlClient;   // dll durch 'Verweis hinzufügen' einbinden 
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -47,13 +46,13 @@ namespace OnLaunchAWSLambda
             //S3   to be evaluated. 
 
             //  db Connect , problem mit nicht passenden assemblys
-            string dbconnectstring =StaticValues.SERVER+StaticValues.DATABASE+StaticValues.UID+StaticValues.PASSWORD;
+           /* string dbconnectstring =StaticValues.SERVER+StaticValues.DATABASE+StaticValues.UID+StaticValues.PASSWORD;
             MySqlConnection connection = new MySqlConnection(dbconnectstring);
             MySqlCommand command = connection.CreateCommand();
             command.CommandText = "SELECT * FROM Waren";
             MySqlDataReader Reader;
             connection.Open();
-            Reader = command.ExecuteReader();
+            Reader = command.ExecuteReader(); */
 
             if (logging)
             {
