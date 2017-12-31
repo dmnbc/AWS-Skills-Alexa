@@ -39,8 +39,8 @@ namespace AWSLambdaRDSInstanceLister
 
                 log.LogLine("39: Launch ");
 
-                (outputSpeech as PlainTextOutputSpeech).Text = "Ergebnis der Suche nch Datenbanken: ";
-                AmazonRDSClient amazonRDSClient = new AmazonRDSClient(StaticValues.AWS_ACCESS_KEY, StaticValues.AWS_SECRET_KEY);
+                (outputSpeech as PlainTextOutputSpeech).Text = "Ergebnis der Suche nach Datenbanken: ";
+                AmazonRDSClient amazonRDSClient = new AmazonRDSClient(StaticValues.AWS_ACCESS_KEY, StaticValues.AWS_SECRET_KEY,Amazon.RegionEndpoint.EUCentral1);
                 try
                 {
                    
